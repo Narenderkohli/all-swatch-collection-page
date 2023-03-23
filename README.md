@@ -1,0 +1,1 @@
+# all-swatch-collection-page
