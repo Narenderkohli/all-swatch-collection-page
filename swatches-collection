@@ -1,0 +1,131 @@
+<h4 class="Avilable-Colors">Click here to view available colors</h4>
+
+<div class="Avilable-Colors-main" style="display:none">
+  <span class="Close-color"><i class="fa fa-times" aria-hidden="true"></i></span>
+  <ul class="color-metafiled">
+    <variant-radios
+      class="no-js-hiddenn"
+      data-section="{{ section.id }}"
+      data-url="{{  }}"
+      {{ block.shopify_attributes }}
+    >
+      <fieldset class="js product-form__input">
+        {% assign keys = 'Color,color,Colour,colour' | split: ',' %}
+        {% for key in keys %}
+          {% if card_product.options contains key %}
+            <div class="product_tile_color_holder in_lab">
+              {% for color_option in card_product.options_by_name[key].values %}
+                {% for variant in card_product.variants %}
+                  {% if variant.options contains color_option %}
+                    {% if variant.image %}
+                      {% assign background_style = color_option %}
+                    {% endif %}
+                    {% if variant.metafields.color.swatch %}
+                      {% assign background_style = variant.metafields.color.swatch %}
+                    {% endif %}
+                    {% if variant.metafields.image.swatch %}
+                      {% assign background_style = 'url(' | append: variant.metafields.image.swatch | append: ')' %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+                <div class="custom-swatch-Color cstm-radio">
+                  <input
+                    type="radio"
+                    {% for variant in card_product.variants %}
+                      {% if variant.options contains color_option %}
+                        {% if variant.image %}
+                          variantid="{{ variant.id }}"
+                          data-img="{{ variant.image.src | img_url: 'master' }}"
+                        {% endif %}
+                        data_url="{{ variant.url }}"
+                      {% endif -%}
+                    {% endfor %}
+                    name="{{ card_product.id }}_card_color"
+                    id="{{ card_product.id }}color{{ forloop.index }}"
+                  >
+                  <span
+                    id="hover_new"
+                    var="{{ color_option | handle }}"
+                    class="{{  color_option | handle }}"
+                    {% for variant in card_product.variants %}
+                      {% if variant.options contains color_option %}
+                        {% if variant.image %}
+                          variantid="{{ variant.id }}"
+                          data_url="{{ variant.url }}"
+                          data-img="{{ variant.image.src | img_url: 'master' }}"
+                          style="
+                              background-size: cover;
+                               background-position: center;
+                              background-repeat: no-repeat; background-color: {{ color_option | split: ' ' | last | handle  }}!important;
+                            background-size: cover;
+                          "
+                        {% endif %}
+                      {% endif -%}
+                    {% endfor %}
+                    style="
+                        background-size: cover;
+                         background-position: center;
+                        background-repeat: no-repeat; background-color: {{ color_option | split: ' ' | last | handle  }}!important;
+                      background-size: cover;
+                    "
+                  >
+                  </span
+                  ><label>
+                    <span class="custom-swatch-Color value_box"> {{ color_option }}</span></label
+                  >
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </fieldset>
+    </variant-radios>
+  </ul>
+</div>
+
+<style>
+    span.value_box {
+      display: none;
+  }
+    .custom-swatch-Color:hover label span.value_box {
+      display: block !important;
+    }
+  .custom-swatch-Color label span.value_box {
+      display: none !important;
+      position: absolute !important;
+      top: -30px !important;
+      left: 0 !important;
+      background: #3175BF !important;
+      padding: 5px !important;
+      color: #973535 !important;
+  }
+  span.value_box:before {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 0px;
+      left: 10px;
+      right:auto;
+      bottom: 0;
+      border: 6px solid transparent;
+      border-bottom: 0;
+      border-top: 5px solid #3175BF;
+      transform: translate(0, calc(0px + 5px));
+  }
+
+    .custom-swatch-Color label span.value_box {
+      display: none !important;
+      position: absolute !important;
+      top: -30px !important;
+      left: 0 !important;
+  /*     background: #3175bf00 !important; */
+      padding: 12px !important;
+      color: #973535 !important;
+      padding: 0 !important;
+      border-radius: 0;
+      min-width: 60px;
+      font-size: 12px;
+      text-align: center;
+      color: #fff !important;
+  }
+</style>
